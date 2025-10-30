@@ -7,13 +7,14 @@ namespace App\Livewire\Actions;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Routing\Redirector;
 
 final class Logout
 {
     /**
      * Log the current user out of the application.
      */
-    public function __invoke(): RedirectResponse
+    public function __invoke(): Redirector|RedirectResponse
     {
         Auth::guard('web')->logout();
 

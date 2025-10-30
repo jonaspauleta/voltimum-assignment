@@ -52,6 +52,11 @@ final class User extends Authenticatable
             ->implode('');
     }
 
+    public function isAdmin(): true
+    {
+        return true; // TODO: Implement this
+    }
+
     /**
      * Get the attributes that should be cast.
      *
