@@ -17,3 +17,11 @@ parameters:
     level: 6
 
     tmpDir: /tmp/phpstan
+
+    ignoreErrors:
+        -
+            message: '#never returns\s+Illuminate\\Routing\\Redirector#'
+            path: app/Livewire/Actions/Logout.php
+        -
+            message: '#internal class#'
+            path: config/pulse.php
