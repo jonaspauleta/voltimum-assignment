@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
-final class User extends Authenticatable
+final class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
@@ -26,6 +28,7 @@ final class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_admin',
     ];
 
     /**
@@ -52,9 +55,14 @@ final class User extends Authenticatable
             ->implode('');
     }
 
-    public function isAdmin(): true
+    public function canAccessPanel(Panel $panel): bool
     {
-        return true; // TODO: Implement this
+        return $this->is_admin && $this->hasVerifiedEmail();
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
     }
 
     /**
