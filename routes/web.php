@@ -1,21 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Livewire\Settings\TwoFactor;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', fn (): Factory|View => view('welcome'))->name('home');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function (): void {
     Route::redirect('settings', 'settings/profile');
 
     Route::get('settings/profile', Profile::class)->name('profile.edit');
