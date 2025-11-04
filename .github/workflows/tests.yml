@@ -15,14 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: Testing
 
-    strategy:
-      matrix:
-        typesense-version: ['29.0']
-        typesense-port: ['8108:8108']
-
     services:
       typesense:
-        image: typesense/typesense:${{ matrix.typesense-version }}
+        image: typesense/typesense:29.0
 
     steps:
       - name: Checkout
@@ -44,11 +39,11 @@ jobs:
       - name: Start Typesense
         run: |
             docker run -d \
-            -p ${{ matrix.typesense-port }} \
+            -p 8108:8108 \
             --name typesense \
             -v /tmp/typesense-data:/data \
             -v /tmp/typesense-analytics-data:/analytics-data \
-            typesense/typesense:${{ matrix.typesense-version}} \
+            typesense/typesense:29.0 \
             --api-key=xyz \
             --data-dir=/data \
             --enable-search-analytics=true \
