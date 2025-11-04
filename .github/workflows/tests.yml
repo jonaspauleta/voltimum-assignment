@@ -32,6 +32,13 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
+      - name: Start Typesense
+        uses: jirevwe/typesense-github-action@v1.0.1
+        with:
+          typesense-version: 0.29.0
+          typesense-api-key: xyz
+          typesense-port: 8108
+
       - name: Install Node Dependencies
         run: npm i
 
