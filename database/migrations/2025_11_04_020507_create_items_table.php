@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreignId('distributor_id')->constrained()->cascadeOnDelete();
             $table->decimal('price', 10, 2);
             $table->string('sku')->unique()->index();
-            $table->boolean('available')->default(true);
             $table->timestamps();
         });
     }

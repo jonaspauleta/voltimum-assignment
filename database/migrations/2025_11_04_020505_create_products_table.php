@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('ean')->unique()->index();
             $table->text('description');
-            $table->boolean('active')->default(true);
             $table->timestamps(0);
         });
     }

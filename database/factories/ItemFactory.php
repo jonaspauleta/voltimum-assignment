@@ -26,7 +26,6 @@ final class ItemFactory extends Factory
             'distributor_id' => Distributor::factory(),
             'sku' => fake()->unique()->ean8(),
             'price' => fake()->randomFloat(2, 0, 1000),
-            'available' => fake()->boolean(),
         ];
     }
 }

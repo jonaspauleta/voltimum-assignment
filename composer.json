@@ -10,12 +10,15 @@
         "filament/filament": "^4.0",
         "laravel/fortify": "^1.30",
         "laravel/framework": "^12.0",
+        "laravel/horizon": "^5.38",
         "laravel/pulse": "^1.4",
+        "laravel/scout": "^10.20",
         "laravel/telescope": "^5.15",
         "laravel/tinker": "^2.10.1",
         "livewire/flux": "^2.1.1",
         "livewire/volt": "^1.7.0",
-        "spatie/laravel-sluggable": "^3.7"
+        "spatie/laravel-sluggable": "^3.7",
+        "typesense/typesense-php": "^5.1"
     },
     "require-dev": {
         "driftingly/rector-laravel": "^2.1",
@@ -48,17 +51,18 @@
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
-            "@php artisan migrate --force",
+            "@php artisan migrate --force --seed",
+            "@php artisan scout:import \"App\\Models\\Product\"",
             "npm install",
             "npm run build"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74,#00aa66\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" \"php artisan horizon\" --names=server,queue,logs,vite,horizon --kill-others"
         ],
         "dev:herd": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#fb7185,#fdba74\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=logs,vite --kill-others"
+            "npx concurrently -c \"#fb7185,#fdba74,#00aa66\" \"php artisan pail --timeout=0\" \"npm run dev\" \"php artisan horizon\" --names=logs,vite,horizon --kill-others"
         ],
         "test": [
             "@php artisan config:clear --ansi",

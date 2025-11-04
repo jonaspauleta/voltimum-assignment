@@ -26,7 +26,6 @@ final class ProductFactory extends Factory
             'slug' => fake()->unique()->slug(),
             'ean' => fake()->unique()->ean13(),
             'description' => fake()->text(),
-            'active' => fake()->boolean(),
         ];
     }
 }
