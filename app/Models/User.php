@@ -60,11 +60,6 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
         return $this->is_admin && $this->hasVerifiedEmail();
     }
 
-    public function isAdmin(): bool
-    {
-        return $this->is_admin;
-    }
-
     /**
      * Get the attributes that should be cast.
      *

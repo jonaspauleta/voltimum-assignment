@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 final class DatabaseSeeder extends Seeder
@@ -22,5 +21,12 @@ final class DatabaseSeeder extends Seeder
                 'email' => 'test@example.com',
                 'is_admin' => true,
             ]);
+
+        $this->call([
+            ManufacturerSeeder::class,
+            DistributorSeeder::class,
+            ProductSeeder::class,
+            ItemSeeder::class,
+        ]);
     }
 }

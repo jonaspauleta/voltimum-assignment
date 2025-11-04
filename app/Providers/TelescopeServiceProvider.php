@@ -51,7 +51,7 @@ final class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      */
     protected function gate(): void
     {
-        Gate::define('viewTelescope', fn (User $user): bool => $user->isAdmin());
+        Gate::define('viewTelescope', fn (User $user): bool => $user->is_admin);
     }
 
     /**
