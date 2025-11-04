@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+
 final class Product extends Model
 {
     /** @use HasFactory<ProductFactory> */
@@ -36,6 +37,9 @@ final class Product extends Model
             ->saveSlugsTo('slug');
     }
 
+    /**
+     * @return BelongsTo<Manufacturer, $this>
+     */
     public function manufacturer(): BelongsTo
     {
         return $this->belongsTo(Manufacturer::class);

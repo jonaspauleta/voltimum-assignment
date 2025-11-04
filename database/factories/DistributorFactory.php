@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
+use App\Models\Distributor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Distributor>
+ * @extends Factory<Distributor>
  */
-class DistributorFactory extends Factory
+final class DistributorFactory extends Factory
 {
     /**
      * Define the model's default state.

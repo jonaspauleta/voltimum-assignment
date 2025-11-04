@@ -33,3 +33,11 @@ Telescope
 Filament
 
 Missing Tests
+
+composer lint
+composer lint:test
+composer test
+composer setup
+composer dev
+
+used Cursor IDE

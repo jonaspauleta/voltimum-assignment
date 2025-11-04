@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use Database\Factories\DistributorFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-class Distributor extends Model
+
+final class Distributor extends Model
 {
-    /** @use HasFactory<\Database\Factories\DistributorFactory> */
+    /** @use HasFactory<DistributorFactory> */
     use HasFactory, HasSlug;
 
     protected $fillable = [
@@ -17,15 +21,18 @@ class Distributor extends Model
         'slug',
     ];
 
-    public function items(): HasMany
-    {
-        return $this->hasMany(Item::class);
-    }
-
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
+    }
+
+    /**
+     * @return HasMany<Item, $this>
+     */
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class);
     }
 }

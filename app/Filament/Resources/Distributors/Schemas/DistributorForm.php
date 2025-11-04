@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Distributors\Schemas;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
-class DistributorForm
+final class DistributorForm
 {
     public static function configure(Schema $schema): Schema
     {
