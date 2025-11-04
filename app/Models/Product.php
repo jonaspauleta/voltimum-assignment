@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Carbon\CarbonImmutable;
 use Database\Factories\ProductFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -89,7 +90,7 @@ final class Product extends Model
             'slug' => $this->slug,
             'ean' => $this->ean,
             'description' => $this->description,
-            'manufacturer_name' => $this->manufacturer?->name ?? '',
+            'manufacturer_name' => $this->manufacturer->name,
             'distributor_names' => $this->items->pluck('distributor.name')->filter()->unique()->values()->all(),
             'skus' => $this->items->pluck('sku')->filter()->values()->all(),
         ];
@@ -98,10 +99,10 @@ final class Product extends Model
     /**
      * Modify the query used to retrieve models when making all of the models searchable.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  Builder<Product>  $query
+     * @return Builder<Product>
      */
-    protected function makeAllSearchableUsing($query)
+    protected function makeAllSearchableUsing(Builder $query): Builder
     {
         return $query->with(['manufacturer', 'items.distributor']);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Items;
 
 use App\Filament\Resources\Items\Pages\CreateItem;
@@ -14,7 +16,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class ItemResource extends Resource
+final class ItemResource extends Resource
 {
     protected static ?string $model = Item::class;
 

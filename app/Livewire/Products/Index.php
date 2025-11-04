@@ -21,12 +21,12 @@ final class Index extends Component
     #[Url(as: 'q', history: true)]
     public string $search = '';
 
-    #[Url(as: 'manufacturers', history: true)]
     /** @var array<int, string> */
+    #[Url(as: 'manufacturers', history: true)]
     public array $selectedManufacturers = [];
 
-    #[Url(as: 'distributors', history: true)]
     /** @var array<int, string> */
+    #[Url(as: 'distributors', history: true)]
     public array $selectedDistributors = [];
 
     public int $perPage = 12;
@@ -71,8 +71,8 @@ final class Index extends Component
     public function hasActiveFilters(): bool
     {
         return $this->search !== ''
-            || ! empty($this->selectedManufacturers)
-            || ! empty($this->selectedDistributors);
+            || $this->selectedManufacturers !== []
+            || $this->selectedDistributors !== [];
     }
 
     /**
@@ -147,6 +147,9 @@ final class Index extends Component
         return view('livewire.products.index');
     }
 
+    /**
+     * @return Builder<Product>
+     */
     private function buildSearchQuery(): Builder
     {
         // Use wildcard search if no specific search term
@@ -163,7 +166,7 @@ final class Index extends Component
             'per_page' => $this->perPage,
         ];
 
-        if (! empty($filters)) {
+        if ($filters !== []) {
             $options['filter_by'] = implode(' && ', $filters);
         }
 
@@ -178,7 +181,7 @@ final class Index extends Component
         $filters = [];
 
         // Add manufacturer filters
-        if (! empty($this->selectedManufacturers)) {
+        if ($this->selectedManufacturers !== []) {
             $manufacturerConditions = array_map(
                 fn (string $name): string => "manufacturer_name:=`{$name}`",
                 $this->selectedManufacturers
@@ -187,7 +190,7 @@ final class Index extends Component
         }
 
         // Add distributor filters
-        if (! empty($this->selectedDistributors)) {
+        if ($this->selectedDistributors !== []) {
             $distributorConditions = array_map(
                 fn (string $name): string => "distributor_names::`{$name}`",
                 $this->selectedDistributors

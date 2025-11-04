@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\Items\Schemas;
 
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
-class ItemForm
+final class ItemForm
 {
     public static function configure(Schema $schema): Schema
     {
