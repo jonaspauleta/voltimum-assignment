@@ -20,7 +20,7 @@ return [
     |
     */
 
-    'driver' => env('SCOUT_DRIVER', 'collection'),
+    'driver' => env('SCOUT_DRIVER', 'typesense'),
 
     /*
     |--------------------------------------------------------------------------
@@ -232,60 +232,24 @@ return [
                             'type' => 'string',
                         ],
                         [
-                            'name' => 'manufacturer',
-                            'type' => 'object',
-                            'fields' => [
-                                [
-                                    'name' => 'id',
-                                    'type' => 'string',
-                                ],
-                                [
-                                    'name' => 'name',
-                                    'type' => 'string',
-                                ],
-                                [
-                                    'name' => 'slug',
-                                    'type' => 'string',
-                                ],
-                            ],
+                            'name' => 'manufacturer_name',
+                            'type' => 'string',
+                            'facet' => true,
                         ],
                         [
-                            'name' => 'items',
-                            'type' => 'object[]',
-                            'fields' => [
-                                [
-                                    'name' => 'id',
-                                    'type' => 'string',
-                                ],
-                                [
-                                    'name' => 'sku',
-                                    'type' => 'string',
-                                ],
-                                [
-                                    'name' => 'distributor',
-                                    'type' => 'object',
-                                    'fields' => [
-                                        [
-                                            'name' => 'id',
-                                            'type' => 'string',
-                                        ],
-                                        [
-                                            'name' => 'name',
-                                            'type' => 'string',
-                                        ],
-                                        [
-                                            'name' => 'slug',
-                                            'type' => 'string',
-                                        ],
-                                    ],
-                                ],
-                            ],
+                            'name' => 'distributor_names',
+                            'type' => 'string[]',
+                            'facet' => true,
+                        ],
+                        [
+                            'name' => 'skus',
+                            'type' => 'string[]',
                         ],
                     ],
-                    'enable_nested_fields' => true,
                 ],
                 'search-parameters' => [
-                    'query_by' => 'name,slug,ean,description,manufacturer.name,manufacturer.slug,items.sku,items.distributor.name,items.distributor.slug',
+                    'query_by' => 'name,slug,ean,description,manufacturer_name,distributor_names,skus',
+                    'facet_by' => 'manufacturer_name,distributor_names',
                 ],
             ],
         ],

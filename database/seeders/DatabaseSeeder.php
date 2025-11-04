@@ -26,11 +26,12 @@ final class DatabaseSeeder extends Seeder
                 'is_admin' => true,
             ]);
 
-        Manufacturer::factory()->count(4)->create()->each(function ($m): void {
+        $distributors = Distributor::factory()->count(4)->create();
+
+        Manufacturer::factory()->count(4)->create()->each(function ($m) use ($distributors): void {
             Product::factory()->count(5)->create([
                 'manufacturer_id' => $m->id,
-            ])->each(function ($p): void {
-                $distributors = Distributor::factory()->count(2)->create();
+            ])->each(function ($p) use ($distributors): void {
                 foreach ($distributors as $d) {
                     Item::factory()->create([
                         'product_id' => $p->id,

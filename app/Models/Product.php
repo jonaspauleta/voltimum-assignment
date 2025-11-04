@@ -45,8 +45,6 @@ final class Product extends Model
         'description',
     ];
 
-    protected $with = ['manufacturer', 'items.distributor'];
-
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
@@ -82,36 +80,29 @@ final class Product extends Model
      */
     public function toSearchableArray(): array
     {
+        // Ensure relationships are loaded
+        $this->loadMissing(['manufacturer', 'items.distributor']);
+
         return [
             'id' => (string) $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
             'ean' => $this->ean,
             'description' => $this->description,
-            'manufacturer' => [
-                'id' => (string) $this->manufacturer->id,
-                'name' => $this->manufacturer->name,
-                'slug' => $this->manufacturer->slug,
-            ],
-            'items' => $this->items->map(fn (Item $item): array => [
-                'id' => (string) $item->id,
-                'sku' => $item->sku,
-                'distributor' => [
-                    'id' => (string) $item->distributor->id,
-                    'name' => $item->distributor->name,
-                    'slug' => $item->distributor->slug,
-                ],
-            ])->values()->all(),
+            'manufacturer_name' => $this->manufacturer?->name ?? '',
+            'distributor_names' => $this->items->pluck('distributor.name')->filter()->unique()->values()->all(),
+            'skus' => $this->items->pluck('sku')->filter()->values()->all(),
         ];
     }
 
-    public function searchableAs(): string
+    /**
+     * Modify the query used to retrieve models when making all of the models searchable.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function makeAllSearchableUsing($query)
     {
-        return 'products';
-    }
-
-    public function getScoutKeyName(): string
-    {
-        return 'id';
+        return $query->with(['manufacturer', 'items.distributor']);
     }
 }
