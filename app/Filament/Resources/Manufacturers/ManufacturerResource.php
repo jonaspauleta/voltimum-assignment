@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources\Manufacturers;
 
 use App\Filament\Resources\Manufacturers\Pages\CreateManufacturer;
@@ -16,7 +14,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-final class ManufacturerResource extends Resource
+class ManufacturerResource extends Resource
 {
     protected static ?string $model = Manufacturer::class;
 

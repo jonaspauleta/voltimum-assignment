@@ -1,15 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources\Items\Schemas;
 
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
-final class ItemForm
+class ItemForm
 {
     public static function configure(Schema $schema): Schema
     {
@@ -27,8 +24,6 @@ final class ItemForm
                     ->prefix('$'),
                 TextInput::make('sku')
                     ->label('SKU')
-                    ->required(),
-                Toggle::make('available')
                     ->required(),
             ]);
     }
