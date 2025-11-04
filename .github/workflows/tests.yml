@@ -15,6 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     environment: Testing
 
+    strategy:
+      matrix:
+        typesense-version: ['29.0']
+        typesense-port: ['8108:8108']
+
+    services:
+      typesense:
+        image: typesense/typesense:${{ matrix.typesense-version }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,11 +42,39 @@ jobs:
           cache: 'npm'
 
       - name: Start Typesense
-        uses: jirevwe/typesense-github-action@v1.0.1
-        with:
-          typesense-version: 0.29.0
-          typesense-api-key: xyz
-          typesense-port: 8108
+        run: |
+            docker run -d \
+            -p ${{ matrix.typesense-port }} \
+            --name typesense \
+            -v /tmp/typesense-data:/data \
+            -v /tmp/typesense-analytics-data:/analytics-data \
+            typesense/typesense:${{ matrix.typesense-version}} \
+            --api-key=xyz \
+            --data-dir=/data \
+            --enable-search-analytics=true \
+            --analytics-dir=/analytics-data  \
+            --analytics-flush-interval=60 \
+            --analytics-minute-rate-limit=100 \
+            --enable-cors
+  
+      - name: Wait for Typesense to be healthy
+        shell: bash
+        run: |
+            start_time=$(date +%s)
+            timeout=30
+            counter=0
+            echo "Waiting for Typesense to be healthy..."
+            until curl -s http://localhost:8108/health | grep -q '"ok":true'; do
+              if [ $counter -eq $timeout ]; then
+                echo "Timed out waiting for Typesense to be healthy"
+                exit 1
+              fi  
+              sleep 1
+              counter=$((counter + 1))
+            done
+            end_time=$(date +%s)
+            elapsed=$((end_time - start_time))
+            echo "Typesense healthcheck elapsed: ${elapsed}s"
 
       - name: Install Node Dependencies
         run: npm i
